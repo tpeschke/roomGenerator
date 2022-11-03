@@ -1,0 +1,40 @@
+h1 {
+    background: black;
+    color: white;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-left: 5px;
+}
+
+h2, p {
+    margin: 0;
+    font-size: 15px;
+}
+
+#roomDiv {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.room-shell {
+    width: 275px;
+    background: lightgray;
+    border-radius: 5px;
+    margin: 5px;
+    height: 100%;
+}
+
+.lower-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 5px 15px 5px
+}
+
+.results {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
