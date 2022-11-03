@@ -48,7 +48,8 @@ let getRoomInfo = () => {
 }
 
 let generateRoomsAndShowOnPage = () => {
-    for (let i = 0; i < 20; i++) {
+    let roomNumber = 100
+    for (let i = 0; i < roomNumber; i++) {
         let room = getRoomInfo()
 
         let roomDiv = document.createElement('div')
@@ -92,7 +93,7 @@ let generateRoomsAndShowOnPage = () => {
         document.getElementById('roomDiv').appendChild(roomDiv)
     }
 
-    document.getElementById('titleDiv').appendChild(document.createTextNode(`${20} Rooms Created`))
+    document.getElementById('titleDiv').appendChild(document.createTextNode(`${roomNumber} Rooms Created`))
 }
 
 generateRoomsAndShowOnPage()
