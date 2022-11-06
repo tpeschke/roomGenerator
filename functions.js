@@ -59,7 +59,7 @@ let generateRoomsAndShowOnPage = () => {
         roomDiv.classList.add("room-shell")
         lowerDiv.classList.add("lower-div")
 
-        header.appendChild(document.createTextNode(`Room #${i + 1}`))
+        header.appendChild(document.createTextNode(`## Room #${i + 1}`))
         roomDiv.appendChild(header)
 
         let leftDiv = document.createElement('div')
