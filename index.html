@@ -1,17 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dungeoncrafter's Forge Room Generator</title>
 
-    <link rel="stylesheet" href="main.css">
+    <style>
+        h1 {
+            background: black;
+            color: white;
+            margin: 0;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            padding-left: 5px;
+        }
+
+        h2,
+        p {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        #roomDiv {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+
+        .room-shell {
+            width: 275px;
+            background: lightgray;
+            border-radius: 5px;
+            margin: 5px;
+            height: 100%;
+        }
+
+        .lower-div {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 5px 15px 5px
+        }
+
+        .results {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
 </head>
+
 <body>
     <div id="titleDiv"></div>
     <div id="roomDiv"></div>
 </body>
 
-<script src="functions.js"></script>
+<script>
+    let rooms = []
+    const EMPTY = 'Empty'
+        , SPECIAL = 'Special'
+        , PASSIVEACTIVE = 'Passive & Active'
+        , PASSIVE = 'Passive'
+        , ACTIVE = 'Active'
+        , ERROR = 'Something went Wrong with the '
+        , YES = 'Yes'
+        , NO = 'No'
+
+    let getThreat = () => {
+        let randomRoll = Math.floor(Math.random() * (20 - 1 + 1) + 1)
+
+        if (randomRoll > 14) {
+            return { threat: EMPTY, roll: randomRoll }
+        } else if (randomRoll > 13) {
+            return { threat: SPECIAL, roll: randomRoll }
+        } else if (randomRoll > 10) {
+            return { threat: PASSIVEACTIVE, roll: randomRoll }
+        } else if (randomRoll > 5) {
+            return { threat: PASSIVE, roll: randomRoll }
+        } else if (randomRoll > 0) {
+            return { threat: ACTIVE, roll: randomRoll }
+        } else {
+            return { threat: ERROR + 'Threat', roll: randomRoll }
+        }
+    }
+
+    getTreasure = (threat) => {
+        let randomRoll = Math.floor(Math.random() * (4 - 1 + 1) + 1)
+
+        if (threat === EMPTY && randomRoll === 1) {
+            return { treasure: YES, roll: randomRoll }
+        } else if ((threat === SPECIAL || threat === PASSIVE) && randomRoll < 3) {
+            return { treasure: YES, roll: randomRoll }
+        } else if ((threat === PASSIVEACTIVE || threat === ACTIVE) && randomRoll < 4) {
+            return { treasure: YES, roll: randomRoll }
+        } else {
+            return { treasure: NO, roll: randomRoll }
+        }
+    }
+
+    let getRoomInfo = () => {
+        let threat = getThreat()
+        let treasure = getTreasure(threat.threat)
+
+        return { threat, treasure }
+    }
+
+    let generateRoomsAndShowOnPage = () => {
+        let roomNumber = 100
+        for (let i = 0; i < roomNumber; i++) {
+            let room = getRoomInfo()
+
+            let roomDiv = document.createElement('div')
+                , header = document.createElement('h1')
+                , lowerDiv = document.createElement('div')
+
+            roomDiv.classList.add("room-shell")
+            lowerDiv.classList.add("lower-div")
+
+            header.appendChild(document.createTextNode(`## Room #${i + 1}`))
+            roomDiv.appendChild(header)
+
+            let leftDiv = document.createElement('div')
+                , rightDiv = document.createElement('div')
+                , leftHeader = document.createElement('h2')
+                , rightHeader = document.createElement('h2')
+                , leftContent = document.createElement('p')
+                , rightContent = document.createElement('p')
+
+            leftDiv.classList.add("results")
+            rightDiv.classList.add("results")
+
+            leftHeader.append(document.createTextNode('Threat'))
+            rightHeader.append(document.createTextNode('Treasure'))
+
+            // console.log(room)
+            leftContent.append(document.createTextNode(`${room.threat.threat} (Roll: ${room.threat.roll})`))
+            rightContent.append(document.createTextNode(`${room.treasure.treasure} (Roll: ${room.treasure.roll})`))
+
+            leftDiv.append(leftHeader)
+            leftDiv.append(leftContent)
+
+            rightDiv.append(rightHeader)
+            rightDiv.append(rightContent)
+
+            lowerDiv.append(leftDiv)
+            lowerDiv.append(rightDiv)
+
+            roomDiv.append(lowerDiv)
+
+            document.getElementById('roomDiv').appendChild(roomDiv)
+        }
+
+        document.getElementById('titleDiv').appendChild(document.createTextNode(`${roomNumber} Rooms Created. Refresh the page to create new ones.`))
+    }
+
+    generateRoomsAndShowOnPage()
+</script>
+
 </html>
