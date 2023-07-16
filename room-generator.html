@@ -69,7 +69,7 @@
         , NO = 'No'
 
     let getThreat = () => {
-        let randomRoll = Math.floor(Math.random() * (20 - 1 + 1) + 1)
+        let randomRoll = Math.floor(Math.random() * 20 + 1)
 
         if (randomRoll > 14) {
             return { threat: EMPTY, roll: randomRoll }
@@ -87,7 +87,7 @@
     }
 
     getTreasure = (threat) => {
-        let randomRoll = Math.floor(Math.random() * (4 - 1 + 1) + 1)
+        let randomRoll = Math.floor(Math.random() * 4 + 1)
 
         if (threat === EMPTY && randomRoll === 1) {
             return { treasure: YES, roll: randomRoll }
@@ -100,11 +100,46 @@
         }
     }
 
+    getPattern = () => {
+        let randomRoll = Math.floor(Math.random() * 12 + 1)
+
+        switch (randomRoll) {
+            case 1:
+                return {pattern: 'Open Field', roll: randomRoll}
+            case 2:
+                return {pattern: 'Divide', roll: randomRoll}
+            case 3:
+                return {pattern: 'Danger Wall', roll: randomRoll}
+            case 4:
+                return {pattern: 'Pillar', roll: randomRoll}
+            case 5:
+                return {pattern: 'Guardian', roll: randomRoll}
+            case 6:
+                return {pattern: 'Pincer', roll: randomRoll}
+            case 7:
+                return {pattern: 'Funnel', roll: randomRoll}
+            case 8:
+                return {pattern: 'Horseshoe', roll: randomRoll}
+            case 9:
+                return {pattern: 'Long-Path', roll: randomRoll}
+            case 10:
+                return {pattern: 'Alley', roll: randomRoll}
+            case 11:
+                return {pattern: 'Up-Hill', roll: randomRoll}
+            case 12:
+                return {pattern: 'King of the Hill', roll: randomRoll}
+            default:
+                return {pattern: 'SOMETHING WENT WRONG', roll: randomRoll}
+        }
+
+    }
+
     let getRoomInfo = () => {
         let threat = getThreat()
         let treasure = getTreasure(threat.threat)
+        let pattern = getPattern()
 
-        return { threat, treasure }
+        return { threat, treasure, pattern }
     }
 
     let generateRoomsAndShowOnPage = () => {
@@ -124,28 +159,38 @@
 
             let leftDiv = document.createElement('div')
                 , rightDiv = document.createElement('div')
+                , middleDiv = document.createElement('div')
                 , leftHeader = document.createElement('h2')
                 , rightHeader = document.createElement('h2')
+                , middleHeader = document.createElement('h2')
                 , leftContent = document.createElement('p')
+                , middleContent = document.createElement('p')
                 , rightContent = document.createElement('p')
 
             leftDiv.classList.add("results")
+            middleDiv.classList.add("results")
             rightDiv.classList.add("results")
 
             leftHeader.append(document.createTextNode('Threat'))
-            rightHeader.append(document.createTextNode('Treasure'))
+            middleHeader.append(document.createTextNode('Treasure'))
+            rightHeader.append(document.createTextNode('Pattern'))
 
             // console.log(room)
             leftContent.append(document.createTextNode(`${room.threat.threat} (Roll: ${room.threat.roll})`))
-            rightContent.append(document.createTextNode(`${room.treasure.treasure} (Roll: ${room.treasure.roll})`))
+            middleContent.append(document.createTextNode(`${room.treasure.treasure} (Roll: ${room.treasure.roll})`))
+            rightContent.append(document.createTextNode(`${room.pattern.pattern} (Roll: ${room.pattern.roll})`))
 
             leftDiv.append(leftHeader)
             leftDiv.append(leftContent)
+
+            middleDiv.append(middleHeader)
+            middleDiv.append(middleContent)
 
             rightDiv.append(rightHeader)
             rightDiv.append(rightContent)
 
             lowerDiv.append(leftDiv)
+            lowerDiv.append(middleDiv)
             lowerDiv.append(rightDiv)
 
             roomDiv.append(lowerDiv)
